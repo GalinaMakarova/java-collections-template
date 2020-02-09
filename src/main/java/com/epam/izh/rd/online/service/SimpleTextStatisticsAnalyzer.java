@@ -1,12 +1,7 @@
 package com.epam.izh.rd.online.service;
 
 import com.epam.izh.rd.online.helper.Direction;
-
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.util.Collections.*;
 
 /**
  * Совет:
@@ -63,7 +58,7 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> getWords(String text) {
-        return Arrays.asList(text.split("(\\.|\\,|\\s|\\!|\\-|\\\")+"));
+        return Arrays.asList(text.split("(\\.|,|\\s|!|-|\")+"));
     }
 
     /**
@@ -130,7 +125,7 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
             }
         }
 
-        if (direction.equals(Direction.DESC)){
+        if (direction.equals(Direction.DESC)) {
             Collections.reverse(sortedWords);
         }
 

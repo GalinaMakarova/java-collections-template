@@ -1,12 +1,9 @@
 package com.epam.izh.rd.online.service;
 
 import com.epam.izh.rd.online.helper.Direction;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static java.util.Collections.*;
 
 /**
  * Данный класс обязан использовать StreamApi из функционала Java 8. Функциональность должна быть идентична
@@ -30,25 +27,27 @@ public class StreamApiTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
 
     @Override
     public List<String> getWords(String text) {
-        return Stream.of(text.split("(\\.|\\,|\\s|\\!|\\-|\\\")+")).collect(Collectors.toList());
+        return Stream.of(text.split("(\\.|,|\\s|!|-|\")+")).collect(Collectors.toList());
     }
 
     @Override
     public Set<String> getUniqueWords(String text) {
-        return getWords(text).stream().distinct().collect(Collectors.toSet());
+        return new HashSet<>(getWords(text));
     }
 
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return null;
+        Map<String, Integer> resultMap = new HashMap<>();
+        getWords(text).forEach(word -> resultMap.put(word, (int) getWords(text).stream().filter(word::equals).count()));
+        return resultMap;
     }
 
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
         if (direction.equals(Direction.ASC)) {
-            return getWords(text).stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+            return getUniqueWords(text).stream().sorted(Comparator.comparingInt(String::length)).collect(Collectors.toList());
         } else {
-            return getWords(text).stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+            return getUniqueWords(text).stream().sorted(Comparator.comparingInt(String::length).reversed()).collect(Collectors.toList());
         }
     }
 }
